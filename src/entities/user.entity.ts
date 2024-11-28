@@ -26,6 +26,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: 'false' })
+  isRegistrationComplete: boolean;
+
   @CreateDateColumn({ type: 'date', name: 'created_at' })
   createdAt: Date;
 
