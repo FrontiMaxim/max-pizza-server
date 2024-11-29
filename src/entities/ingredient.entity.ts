@@ -24,10 +24,10 @@ export class Ingredient {
   @Column({ name: 'image_url' })
   imageUrl: string;
 
-  @CreateDateColumn({ type: 'date', name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date', name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
   @ManyToMany(() => Product)

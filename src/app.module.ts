@@ -17,6 +17,7 @@ import { AuthModule } from './auth';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { NestjsFingerprintModule } from 'nestjs-fingerprint';
 
 @Module({
   imports: [
@@ -58,6 +59,9 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
           strict: true,
         },
       },
+    }),
+    NestjsFingerprintModule.forRoot({
+      params: ['headers', 'userAgent', 'ipAddress'],
     }),
   ],
   controllers: [AppController],

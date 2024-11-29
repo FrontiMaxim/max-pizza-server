@@ -19,9 +19,9 @@ export class Category {
   @OneToMany(() => Product, (product) => product.id)
   products: Product[];
 
-  @CreateDateColumn({ type: 'date', name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date', name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 }

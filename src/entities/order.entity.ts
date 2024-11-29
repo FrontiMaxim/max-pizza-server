@@ -30,9 +30,9 @@ export class Order {
   @JoinColumn({ name: 'cart_id' })
   cart: Cart;
 
-  @CreateDateColumn({ type: 'date', name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date', name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 }
