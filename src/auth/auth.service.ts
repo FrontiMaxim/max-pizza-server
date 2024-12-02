@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Session, User } from 'src/entities';
 import { Repository } from 'typeorm';
 import { SignInDto, SignUpDto } from './dto';
 import { genSalt, hash, compare } from 'bcryptjs';
@@ -8,6 +7,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { sign } from 'jsonwebtoken';
 import { IFingerprint } from 'nestjs-fingerprint';
+import { Session, User } from '../entities';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +46,8 @@ export class AuthService {
           url: `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/auth/confirm/${newUser.id}`,
         },
       });
+
+      return newUser;
     } else {
       throw Error('The current user is already registered');
     }
