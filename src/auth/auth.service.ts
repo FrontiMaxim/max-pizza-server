@@ -2,12 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SignInDto, SignUpDto } from './dto';
-import { genSalt, hash, compare } from 'bcryptjs';
 import { MailerService } from '@nestjs-modules/mailer';
 import { join } from 'path';
-import { sign } from 'jsonwebtoken';
 import { IFingerprint } from 'nestjs-fingerprint';
 import { Session, User } from '../entities';
+import { CryptoService, JwtService } from '../services';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +16,8 @@ export class AuthService {
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
     private readonly mailerService: MailerService,
+    private readonly cryptoService: CryptoService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUp(signUpData: SignUpDto) {
@@ -27,8 +28,13 @@ export class AuthService {
     });
 
     if (!user) {
-      const salt = await genSalt(parseInt(process.env.SECRET_SALT));
-      const hashPassword = await hash(signUpData.password, salt);
+      const salt = await this.cryptoService.genSalt(
+        parseInt(process.env.SECRET_SALT),
+      );
+      const hashPassword = await this.cryptoService.hash(
+        signUpData.password,
+        salt,
+      );
 
       const newUser = await this.userRepository.save({
         ...signUpData,
@@ -68,10 +74,13 @@ export class AuthService {
 
     if (user) {
       if (user.isRegistrationComplete) {
-        const isEqually = await compare(signInData.password, user.password);
+        const isEqually = await this.cryptoService.compare(
+          signInData.password,
+          user.password,
+        );
 
         if (isEqually) {
-          const accessToken = sign(
+          const accessToken = this.jwtService.sign(
             { id: user.id },
             process.env.SECRET_ACCESS_TOKEN,
             {
@@ -79,7 +88,7 @@ export class AuthService {
             },
           );
 
-          const refreshToken = sign(
+          const refreshToken = this.jwtService.sign(
             { id: user.id },
             process.env.SECRET_REFRESH_TOKEN,
           );
@@ -138,7 +147,7 @@ export class AuthService {
     });
 
     if (session) {
-      const newAccessToken = sign(
+      const newAccessToken = this.jwtService.sign(
         { id: session.user.id },
         process.env.SECRET_ACCESS_TOKEN,
         {
