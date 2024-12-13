@@ -55,7 +55,7 @@ export class AuthService {
 
       return newUser;
     } else {
-      throw Error('The current user is already registered');
+      throw Error('Данный пользователь уже зарегистрирован!');
     }
   }
 

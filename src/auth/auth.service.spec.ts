@@ -256,7 +256,7 @@ describe('AuthService', () => {
       expect(result).toEqual(mockUser);
     });
 
-    it('should return error "The current user is already registered"', async () => {
+    it('should return error "Данный пользователь уже зарегистрирован!"', async () => {
       const mockFindOne = jest
         .spyOn(userRepository, 'findOne')
         .mockResolvedValue(mockUser);
@@ -272,7 +272,7 @@ describe('AuthService', () => {
           firstName: 'Max',
           lastName: 'Fronti',
         }),
-      ).rejects.toThrow('The current user is already registered');
+      ).rejects.toThrow('Данный пользователь уже зарегистрирован!');
 
       expect(mockFindOne).toHaveBeenCalled();
       expect(mockGenSalt).not.toHaveBeenCalled();
