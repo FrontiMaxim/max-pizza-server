@@ -49,7 +49,7 @@ export class AuthService {
         context: {
           firstName: newUser.firstName,
           lastName: newUser.lastName,
-          url: `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/auth/confirm/${newUser.id}`,
+          url: `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/auth/confirm/${newUser.id}`,
         },
       });
 

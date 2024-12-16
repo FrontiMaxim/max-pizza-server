@@ -28,11 +28,11 @@ export class AuthController {
   }
 
   @Get('confirm/:id')
-  @Redirect(
-    `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/auth/sign-in`,
-  )
+  @Redirect()
   async confirm(@Param() id: string) {
     await this.authService.confirm(id);
+
+    return { url: `${process.env.FRONT_HOST}/auth/confirm` };
   }
 
   @Post('sign-in')

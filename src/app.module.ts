@@ -21,7 +21,7 @@ import { NestjsFingerprintModule } from 'nestjs-fingerprint';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
